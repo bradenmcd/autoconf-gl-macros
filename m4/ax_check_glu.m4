@@ -38,13 +38,13 @@ if test "X${with_apple_opengl_framework}" != "Xyes"; then
     if test "X$CXX" != "Xcl"; then
       AC_LANG_PUSH([C++])
     fi
-    AC_TRY_LINK([
+    AC_LINK_IFELSE(
+    [AC_LANG_PROGRAM([[
 # if HAVE_WINDOWS_H && defined(_WIN32)
 #   include <windows.h>
 # endif
-# include <GL/glu.h>
-],
-    [gluBeginCurve(0)],
+# include <GL/glu.h>]],
+                     [[gluBeginCurve(0)]])],
     [ax_cv_check_glu_libglu="${ax_try_lib}"; break])
     if test "X$CXX" != "Xcl"; then
       AC_LANG_POP([C++])

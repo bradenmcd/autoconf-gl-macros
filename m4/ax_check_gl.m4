@@ -62,13 +62,13 @@ else
       ax_try_lib="${ax_lib}"
     fi
     LIBS="${ax_try_lib} ${GL_LIBS} ${ax_save_LIBS}"
-    AC_TRY_LINK([
+    AC_LINK_IFELSE(
+    [AC_LANG_PROGRAM([[
 # if HAVE_WINDOWS_H && defined(_WIN32)
 #   include <windows.h>
 # endif
-# include <GL/gl.h>
-],
-    [glBegin(0)],
+# include <GL/gl.h>]],
+                     [[glBegin(0)]])],
     [ax_cv_check_gl_libgl="${ax_try_lib}"; break])
   done
   LIBS=${ax_save_LIBS}
