@@ -28,8 +28,11 @@ if test "X$with_apple_opengl_framework" = "Xyes"; then
             [Use the Apple OpenGL framework.])
   GL_LIBS="-framework OpenGL"
 else
-  GL_CFLAGS="${PTHREAD_CFLAGS}"
-  GL_LIBS="${PTHREAD_LIBS} -lm"
+  AX_LANG_COMPILER_MS
+  if test X$ax_compiler_ms = Xyes; then
+    GL_CFLAGS="${PTHREAD_CFLAGS}"
+    GL_LIBS="${PTHREAD_LIBS} -lm"
+  fi
 
   #
   # Use x_includes and x_libraries if they have been set (presumably by
@@ -55,8 +58,8 @@ else
   ax_save_LIBS="${LIBS}"
   LIBS=""
   ax_check_libs="-lopengl32 -lGL"
-    for ax_lib in ${ax_check_libs}; do
-    if test "X$CC" = "Xcl"; then
+  for ax_lib in ${ax_check_libs}; do
+    if test X$ax_compiler_ms = Xyes; then
       ax_try_lib=`echo $ax_lib | sed -e 's/^-l//' -e 's/$/.lib/'`
     else
       ax_try_lib="${ax_lib}"

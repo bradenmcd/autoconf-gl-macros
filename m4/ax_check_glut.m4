@@ -40,7 +40,7 @@ else
   LIBS=""
   ax_check_libs="-lglut32 -lglut"
   for ax_lib in ${ax_check_libs}; do
-    if test "X$CC" = "Xcl"; then
+    if test X$ax_compiler_ms = Xyes; then
       ax_try_lib=`echo $ax_lib | sed -e 's/^-l//' -e 's/$/.lib/'`
     else
       ax_try_lib="${ax_lib}"
