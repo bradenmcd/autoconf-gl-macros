@@ -28,8 +28,10 @@ if test "X$with_apple_opengl_framework" = "Xyes"; then
             [Use the Apple OpenGL framework.])
   GL_LIBS="-framework OpenGL"
 else
+  AC_LANG_PUSH(C)
+
   AX_LANG_COMPILER_MS
-  if test X$ax_compiler_ms = Xyes; then
+  if test X$ax_compiler_ms = Xno; then
     GL_CFLAGS="${PTHREAD_CFLAGS}"
     GL_LIBS="${PTHREAD_LIBS} -lm"
   fi
@@ -46,8 +48,6 @@ else
       GL_LIBS="-L${x_libraries} -lX11 ${GL_LIBS}"
     fi
   fi
-
-  AC_LANG_PUSH(C)
 
   AC_CHECK_HEADERS([windows.h])
 
