@@ -53,7 +53,7 @@ if test "X${with_apple_opengl_framework}" != "Xyes"; then
   LIBS=${ax_save_LIBS}
   CPPFLAGS=${ax_save_CPPFLAGS}])
   if test "X${ax_cv_check_glu_libglu}" = "Xno"; then
-    no_gl="yes"
+    no_glu="yes"
     GLU_CFLAGS=""
     GLU_LIBS=""
   else
