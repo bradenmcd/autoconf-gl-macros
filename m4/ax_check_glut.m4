@@ -8,7 +8,7 @@ dnl Apple's OpenGL framework should be used on Mac OS X. If Apple's OpenGL
 dnl framework is used, the symbol "HAVE_APPLE_OPENGL_FRAMEWORK" is defined.  If
 dnl GLUT is not found, "no_glut" is set to "yes".
 dnl
-dnl @version 1.6
+dnl @version 1.7
 dnl @author Braden McDaniel <braden@endoframe.com>
 dnl
 AC_DEFUN([AX_CHECK_GLUT],

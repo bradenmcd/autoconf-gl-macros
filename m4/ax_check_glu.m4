@@ -8,7 +8,7 @@ dnl Apple's OpenGL framework should be used on Mac OS X.  If Apple's OpenGL
 dnl framework is used, the symbol "HAVE_APPLE_OPENGL_FRAMEWORK" is defined.  If
 dnl no GLU implementation is found, "no_glu" is set to "yes".
 dnl
-dnl @version 1.0
+dnl @version 1.1
 dnl @author Braden McDaniel <braden@endoframe.com>
 dnl
 AC_DEFUN([AX_CHECK_GLU],
