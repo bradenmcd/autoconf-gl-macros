@@ -20,12 +20,13 @@ if test "X$with_apple_opengl_framework" = "Xyes"; then
   GLUT_LIBS="-framework GLUT -lobjc ${GL_LIBS}"
 else
   GLUT_CFLAGS=${GLU_CFLAGS}
+  GLUT_LIBS=${GLU_LIBS}
 
   #
   # If X is present, assume GLUT depends on it.
   #
   if test "X${no_x}" != "Xyes"; then
-    GLUT_LIBS="${X_PRE_LIBS} -lXmu -lXi ${X_EXTRA_LIBS} ${GLU_LIBS}"
+    GLUT_LIBS="${X_PRE_LIBS} -lXmu -lXi ${X_EXTRA_LIBS} ${GLUT_LIBS}"
   fi
 
   AC_LANG_PUSH(C)
