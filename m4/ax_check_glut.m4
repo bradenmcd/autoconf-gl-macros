@@ -16,8 +16,8 @@ AC_DEFUN([AX_CHECK_GLUT],
 AC_REQUIRE([AC_PATH_XTRA])dnl
 
 if test "X$with_apple_opengl_framework" = "Xyes"; then
-  GLUT_CFLAGS="-framework GLUT ${GLU_CFLAGS}"
-  GLUT_LIBS="-lobjc ${GL_LIBS}"
+  GLUT_CFLAGS="${GLU_CFLAGS}"
+  GLUT_LIBS="-framework GLUT -lobjc ${GL_LIBS}"
 else
   GLUT_CFLAGS=${GLU_CFLAGS}
 
