@@ -1,5 +1,15 @@
-dnl Available from the GNU Autoconf Macro Archive at:
-dnl http://www.gnu.org/software/ac-archive/htmldoc/ax_check_glut.html
+dnl @synopsis AX_CHECK_GLUT
+dnl
+dnl Check for GLUT.  If GLUT is found, the required compiler and linker flags
+dnl are included in the output variables "GLUT_CFLAGS" and "GLUT_LIBS",
+dnl respectively. This macro adds the configure option
+dnl "--with-apple-opengl-framework", which users can use to indicate that
+dnl Apple's OpenGL framework should be used on Mac OS X. If Apple's OpenGL
+dnl framework is used, the symbol "HAVE_APPLE_OPENGL_FRAMEWORK" is defined.  If
+dnl GLUT is not found, "no_glut" is set to "yes".
+dnl
+dnl @version 1.6
+dnl @author Braden McDaniel <braden@endoframe.com>
 dnl
 AC_DEFUN([AX_CHECK_GLUT],
 [AC_REQUIRE([AX_CHECK_GLU])dnl
