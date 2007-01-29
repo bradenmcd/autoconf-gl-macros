@@ -29,13 +29,11 @@ else
     GLUT_LIBS="${X_PRE_LIBS} -lXmu -lXi ${X_EXTRA_LIBS} ${GLUT_LIBS}"
   fi
 
-  AC_LANG_PUSH(C)
-
-  ax_save_CPPFLAGS="${CPPFLAGS}"
-  CPPFLAGS="${GLUT_CFLAGS} ${CPPFLAGS}"
-
   AC_CACHE_CHECK([for GLUT library], [ax_cv_check_glut_libglut],
   [ax_cv_check_glut_libglut="no"
+  AC_LANG_PUSH(C)
+  ax_save_CPPFLAGS="${CPPFLAGS}"
+  CPPFLAGS="${GLUT_CFLAGS} ${CPPFLAGS}"
   ax_save_LIBS="${LIBS}"
   LIBS=""
   ax_check_libs="-lglut32 -lglut"
@@ -56,10 +54,9 @@ else
     [ax_cv_check_glut_libglut="${ax_try_lib}"; break])
 
   done
-  LIBS=${ax_save_LIBS}
-  ])
   CPPFLAGS="${ax_save_CPPFLAGS}"
-  AC_LANG_POP(C)
+  LIBS=${ax_save_LIBS}
+  AC_LANG_POP(C)])
 
   if test "X${ax_cv_check_glut_libglut}" = "Xno"; then
     no_glut="yes"
