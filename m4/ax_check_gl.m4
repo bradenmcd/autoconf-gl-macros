@@ -23,69 +23,55 @@ AC_REQUIRE([ACX_PTHREAD])dnl
 AC_ARG_WITH([apple-opengl-framework],
             [AC_HELP_STRING([--with-apple-opengl-framework],
                             [use Apple OpenGL framework (Mac OS X only)])])
-if test "X$with_apple_opengl_framework" = "Xyes"; then
-  AC_DEFINE([HAVE_APPLE_OPENGL_FRAMEWORK], [1],
-            [Use the Apple OpenGL framework.])
-  GL_LIBS="-framework OpenGL"
-else
-  AC_LANG_PUSH(C)
+AS_IF([test "X$with_apple_opengl_framework" = "Xyes"],
+[AC_DEFINE([HAVE_APPLE_OPENGL_FRAMEWORK], [1],
+           [Use the Apple OpenGL framework.])
+GL_LIBS="-framework OpenGL"],
+[AC_LANG_PUSH([C])
+AX_LANG_COMPILER_MS
+AS_IF([test X$ax_compiler_ms = Xno],
+      [GL_CFLAGS="${PTHREAD_CFLAGS}"; GL_LIBS="${PTHREAD_LIBS} -lm"])
 
-  AX_LANG_COMPILER_MS
-  if test X$ax_compiler_ms = Xno; then
-    GL_CFLAGS="${PTHREAD_CFLAGS}"
-    GL_LIBS="${PTHREAD_LIBS} -lm"
-  fi
+#
+# Use x_includes and x_libraries if they have been set (presumably by
+# AC_PATH_X).
+#
+AS_IF([test "X$no_x" != "Xyes"],
+      [AS_IF([test -n "$x_includes"],
+             [GL_CFLAGS="-I${x_includes} ${GL_CFLAGS}"])]
+       AS_IF([test -n "$x_libraries"],
+             [GL_LIBS="-L${x_libraries} -lX11 ${GL_LIBS}"]))
 
-  #
-  # Use x_includes and x_libraries if they have been set (presumably by
-  # AC_PATH_X).
-  #
-  if test "X$no_x" != "Xyes"; then
-    if test -n "$x_includes"; then
-      GL_CFLAGS="-I${x_includes} ${GL_CFLAGS}"
-    fi
-    if test -n "$x_libraries"; then
-      GL_LIBS="-L${x_libraries} -lX11 ${GL_LIBS}"
-    fi
-  fi
+AC_CHECK_HEADERS([windows.h])
 
-  AC_CHECK_HEADERS([windows.h])
-
-  AC_CACHE_CHECK([for OpenGL library], [ax_cv_check_gl_libgl],
-  [ax_cv_check_gl_libgl="no"
-  ax_save_CPPFLAGS="${CPPFLAGS}"
-  CPPFLAGS="${GL_CFLAGS} ${CPPFLAGS}"
-  ax_save_LIBS="${LIBS}"
-  LIBS=""
-  ax_check_libs="-lopengl32 -lGL"
-  for ax_lib in ${ax_check_libs}; do
-    if test X$ax_compiler_ms = Xyes; then
-      ax_try_lib=`echo $ax_lib | sed -e 's/^-l//' -e 's/$/.lib/'`
-    else
-      ax_try_lib="${ax_lib}"
-    fi
-    LIBS="${ax_try_lib} ${GL_LIBS} ${ax_save_LIBS}"
-    AC_LINK_IFELSE(
-    [AC_LANG_PROGRAM([[
+AC_CACHE_CHECK([for OpenGL library], [ax_cv_check_gl_libgl],
+[ax_cv_check_gl_libgl="no"
+ax_save_CPPFLAGS="${CPPFLAGS}"
+CPPFLAGS="${GL_CFLAGS} ${CPPFLAGS}"
+ax_save_LIBS="${LIBS}"
+LIBS=""
+ax_check_libs="-lopengl32 -lGL"
+for ax_lib in ${ax_check_libs}; do
+  AS_IF([test X$ax_compiler_ms = Xyes],
+        [ax_try_lib=`echo $ax_lib | sed -e 's/^-l//' -e 's/$/.lib/'`],
+        [ax_try_lib="${ax_lib}"])
+  LIBS="${ax_try_lib} ${GL_LIBS} ${ax_save_LIBS}"
+  AC_LINK_IFELSE(
+  [AC_LANG_PROGRAM([[
 # if HAVE_WINDOWS_H && defined(_WIN32)
 #   include <windows.h>
 # endif
 # include <GL/gl.h>]],
-                     [[glBegin(0)]])],
-    [ax_cv_check_gl_libgl="${ax_try_lib}"; break])
-  done
-  LIBS=${ax_save_LIBS}
-  CPPFLAGS=${ax_save_CPPFLAGS}])
+                   [[glBegin(0)]])],
+  [ax_cv_check_gl_libgl="${ax_try_lib}"; break])
+done
+LIBS=${ax_save_LIBS}
+CPPFLAGS=${ax_save_CPPFLAGS}])
 
-  if test "X${ax_cv_check_gl_libgl}" = "Xno"; then
-    no_gl="yes"
-    GL_CFLAGS=""
-    GL_LIBS=""
-  else
-    GL_LIBS="${ax_cv_check_gl_libgl} ${GL_LIBS}"
-  fi
-  AC_LANG_POP(C)
-fi
+AS_IF([test "X${ax_cv_check_gl_libgl}" = "Xno"],
+      [no_gl="yes"; GL_CFLAGS=""; GL_LIBS=""],
+      [GL_LIBS="${ax_cv_check_gl_libgl} ${GL_LIBS}"])
+AC_LANG_POP([C])])
 
 AC_SUBST([GL_CFLAGS])
 AC_SUBST([GL_LIBS])
