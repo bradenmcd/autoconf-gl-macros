@@ -59,7 +59,7 @@ for ax_lib in ${ax_check_libs}; do
                  [ax_cv_check_glut_libglut="${ax_try_lib}"; break])
 done
 
-AS_IF([test "X$ax_cv_check_glut_libglut" = Xno],
+AS_IF([test "X$ax_cv_check_glut_libglut" = Xno -a "X$no_x" = Xyes],
 [LIBS='-framework GLUT'
 AC_LINK_IFELSE([AX_CHECK_GLUT_PROGRAM],
                [ax_cv_check_glut_libglut="$LIBS"])])
