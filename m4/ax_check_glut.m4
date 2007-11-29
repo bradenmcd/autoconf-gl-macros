@@ -1,24 +1,40 @@
-dnl @synopsis AX_CHECK_GLUT
 dnl
 dnl Check for GLUT.  If GLUT is found, the required compiler and linker flags
 dnl are included in the output variables "GLUT_CFLAGS" and "GLUT_LIBS",
-dnl respectively. This macro adds the configure option
-dnl "--with-apple-opengl-framework", which users can use to indicate that
-dnl Apple's OpenGL framework should be used on Mac OS X. If Apple's OpenGL
-dnl framework is used, the symbol "HAVE_APPLE_OPENGL_FRAMEWORK" is defined.  If
-dnl GLUT is not found, "no_glut" is set to "yes".
+dnl respectively.  If GLUT is not found, "no_glut" is set to "yes".
 dnl
-dnl @version 1.8
-dnl @author Braden McDaniel <braden@endoframe.com>
+dnl If the header "GL/glut.h" is found, "HAVE_GL_GLUT_H" is defined.  If the
+dnl header "GLUT/glut.h" is found, HAVE_GLUT_GLUT_H is defined.  These
+dnl preprocessor definitions may not be mutually exclusive.
+dnl
+dnl version: 2.0
+dnl author: Braden McDaniel <braden@endoframe.com>
 dnl
 AC_DEFUN([AX_CHECK_GLUT],
 [AC_REQUIRE([AX_CHECK_GLU])dnl
 AC_REQUIRE([AC_PATH_XTRA])dnl
 
-AS_IF([test "X$with_apple_opengl_framework" = "Xyes"],
-[GLUT_CFLAGS="${GLU_CFLAGS}"; GLUT_LIBS="-framework GLUT -lobjc ${GL_LIBS}"],
-[GLUT_CFLAGS=${GLU_CFLAGS}
+ax_save_CPPFLAGS="${CPPFLAGS}"
+CPPFLAGS="${GLU_CFLAGS} ${CPPFLAGS}"
+AC_CHECK_HEADERS([GL/glut.h GLUT/glut.h])
+CPPFLAGS="${ax_save_CPPFLAGS}"
+
+GLUT_CFLAGS=${GLU_CFLAGS}
 GLUT_LIBS=${GLU_LIBS}
+
+m4_define([AX_CHECK_GLUT_PROGRAM],
+          [AC_LANG_PROGRAM([[
+# if HAVE_WINDOWS_H && defined(_WIN32)
+#   include <windows.h>
+# endif
+# ifdef HAVE_GL_GLUT_H
+#   include <GL/glut.h>
+# elif defined(HAVE_GLUT_GLUT_H)
+#   include <GLUT/glut.h>
+# else
+#   error no glut.h
+# endif]],
+                           [[glutMainLoop()]])])
 
 #
 # If X is present, assume GLUT depends on it.
@@ -39,21 +55,22 @@ for ax_lib in ${ax_check_libs}; do
         [ax_try_lib=`echo $ax_lib | sed -e 's/^-l//' -e 's/$/.lib/'`],
         [ax_try_lib="${ax_lib}"])
   LIBS="${ax_try_lib} ${GLUT_LIBS} ${ax_save_LIBS}"
-  AC_LINK_IFELSE([AC_LANG_PROGRAM([[
-# if HAVE_WINDOWS_H && defined(_WIN32)
-#   include <windows.h>
-# endif
-# include <GL/glut.h>]],
-                                  [[glutMainLoop()]])],
+  AC_LINK_IFELSE([AX_CHECK_GLUT_PROGRAM],
                  [ax_cv_check_glut_libglut="${ax_try_lib}"; break])
 done
+
+AS_IF([test "X$ax_cv_check_glut_libglut" = Xno],
+[LIBS='-framework GLUT'
+AC_LINK_IFELSE([AX_CHECK_GLUT_PROGRAM],
+               [ax_cv_check_glut_libglut="$LIBS"])])
+
 CPPFLAGS="${ax_save_CPPFLAGS}"
-LIBS=${ax_save_LIBS}
+LIBS="${ax_save_LIBS}"
 AC_LANG_POP(C)])
 
-AS_IF([test "X${ax_cv_check_glut_libglut}" = "Xno"],
+AS_IF([test "X$ax_cv_check_glut_libglut" = Xno],
       [no_glut="yes"; GLUT_CFLAGS=""; GLUT_LIBS=""],
-      [GLUT_LIBS="${ax_cv_check_glut_libglut} ${GLUT_LIBS}"])])
+      [GLUT_LIBS="${ax_cv_check_glut_libglut} ${GLUT_LIBS}"])
 
 AC_SUBST([GLUT_CFLAGS])
 AC_SUBST([GLUT_LIBS])
