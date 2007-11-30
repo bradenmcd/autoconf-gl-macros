@@ -72,7 +72,7 @@ AC_LINK_IFELSE([AX_CHECK_GL_PROGRAM],
                [ax_cv_check_gl_libgl="${ax_try_lib} ${ax_check_gl_dylib_flag}"; break])])
 done
 
-AS_IF([test "X$ax_cv_check_gl_libgl" = Xno],
+AS_IF([test "X$ax_cv_check_gl_libgl" = Xno -a "X$no_x" = Xyes],
 [LIBS='-framework OpenGL'
 AC_LINK_IFELSE([AX_CHECK_GL_PROGRAM],
                [ax_cv_check_gl_libgl="$LIBS"])])
