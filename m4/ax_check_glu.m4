@@ -1,4 +1,6 @@
 dnl
+dnl AX_CHECK_GLU
+dnl
 dnl Check for GLU.  If GLU is found, the required preprocessor and linker flags
 dnl are included in the output variables "GLU_CFLAGS" and "GLU_LIBS",
 dnl respectively.  If no GLU implementation is found, "no_glu" is set to "yes".
@@ -9,6 +11,26 @@ dnl preprocessor definitions may not be mutually exclusive.
 dnl
 dnl version: 2.0
 dnl author: Braden McDaniel <braden@endoframe.com>
+dnl
+dnl This program is free software; you can redistribute it and/or modify
+dnl it under the terms of the GNU General Public License as published by
+dnl the Free Software Foundation; either version 2, or (at your option)
+dnl any later version.
+dnl
+dnl This program is distributed in the hope that it will be useful,
+dnl but WITHOUT ANY WARRANTY; without even the implied warranty of
+dnl MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+dnl GNU General Public License for more details.
+dnl
+dnl You should have received a copy of the GNU General Public License
+dnl along with this program; if not, write to the Free Software
+dnl Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+dnl 02110-1301, USA.
+dnl
+dnl As a special exception, the you may copy, distribute and modify the
+dnl configure scripts that are the output of Autoconf when processing
+dnl the Macro.  You need not follow the terms of the GNU General Public
+dnl License when using or distributing such scripts.
 dnl
 AC_DEFUN([AX_CHECK_GLU],
 [AC_REQUIRE([AX_CHECK_GL])dnl

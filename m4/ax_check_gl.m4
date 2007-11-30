@@ -1,4 +1,6 @@
 dnl
+dnl AX_CHECK_GL
+dnl
 dnl Check for an OpenGL implementation.  If GL is found, the required compiler
 dnl and linker flags are included in the output variables "GL_CFLAGS" and
 dnl "GL_LIBS", respectively.  If no usable GL implementation is found, "no_gl"
@@ -10,6 +12,26 @@ dnl definitions may not be mutually exclusive.
 dnl
 dnl version: 2.0
 dnl author: Braden McDaniel <braden@endoframe.com>
+dnl
+dnl This program is free software; you can redistribute it and/or modify
+dnl it under the terms of the GNU General Public License as published by
+dnl the Free Software Foundation; either version 2, or (at your option)
+dnl any later version.
+dnl
+dnl This program is distributed in the hope that it will be useful,
+dnl but WITHOUT ANY WARRANTY; without even the implied warranty of
+dnl MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+dnl GNU General Public License for more details.
+dnl
+dnl You should have received a copy of the GNU General Public License
+dnl along with this program; if not, write to the Free Software
+dnl Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+dnl 02110-1301, USA.
+dnl
+dnl As a special exception, the you may copy, distribute and modify the
+dnl configure scripts that are the output of Autoconf when processing
+dnl the Macro.  You need not follow the terms of the GNU General Public
+dnl License when using or distributing such scripts.
 dnl
 AC_DEFUN([AX_CHECK_GL],
 [AC_REQUIRE([AC_PATH_X])dnl
