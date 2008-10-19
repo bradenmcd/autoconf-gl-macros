@@ -88,7 +88,7 @@ AC_LINK_IFELSE(
 ax_check_libs="-lglu32 -lGLU"
 for ax_lib in ${ax_check_libs}; do
   AS_IF([test X$ax_compiler_ms = Xyes],
-        [ax_try_lib=`echo $ax_lib | sed -e 's/^-l//' -e 's/$/.lib/'`],
+        [ax_try_lib=`echo $ax_lib | $SED -e 's/^-l//' -e 's/$/.lib/'`],
         [ax_try_lib="${ax_lib}"])
   LIBS="${ax_try_lib} ${GL_LIBS} ${ax_save_LIBS}"
   AC_LINK_IFELSE([AX_CHECK_GLU_PROGRAM],

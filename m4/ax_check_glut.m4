@@ -74,7 +74,7 @@ LIBS=""
 ax_check_libs="-lglut32 -lglut"
 for ax_lib in ${ax_check_libs}; do
   AS_IF([test X$ax_compiler_ms = Xyes],
-        [ax_try_lib=`echo $ax_lib | sed -e 's/^-l//' -e 's/$/.lib/'`],
+        [ax_try_lib=`echo $ax_lib | $SED -e 's/^-l//' -e 's/$/.lib/'`],
         [ax_try_lib="${ax_lib}"])
   LIBS="${ax_try_lib} ${GLUT_LIBS} ${ax_save_LIBS}"
   AC_LINK_IFELSE([AX_CHECK_GLUT_PROGRAM],
