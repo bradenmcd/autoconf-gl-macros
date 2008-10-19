@@ -1,37 +1,37 @@
-dnl
-dnl AX_CHECK_GLUT
-dnl
-dnl Check for GLUT.  If GLUT is found, the required compiler and linker flags
-dnl are included in the output variables "GLUT_CFLAGS" and "GLUT_LIBS",
-dnl respectively.  If GLUT is not found, "no_glut" is set to "yes".
-dnl
-dnl If the header "GL/glut.h" is found, "HAVE_GL_GLUT_H" is defined.  If the
-dnl header "GLUT/glut.h" is found, HAVE_GLUT_GLUT_H is defined.  These
-dnl preprocessor definitions may not be mutually exclusive.
-dnl
-dnl version: 2.0
-dnl author: Braden McDaniel <braden@endoframe.com>
-dnl
-dnl This program is free software; you can redistribute it and/or modify
-dnl it under the terms of the GNU General Public License as published by
-dnl the Free Software Foundation; either version 2, or (at your option)
-dnl any later version.
-dnl
-dnl This program is distributed in the hope that it will be useful,
-dnl but WITHOUT ANY WARRANTY; without even the implied warranty of
-dnl MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-dnl GNU General Public License for more details.
-dnl
-dnl You should have received a copy of the GNU General Public License
-dnl along with this program; if not, write to the Free Software
-dnl Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-dnl 02110-1301, USA.
-dnl
-dnl As a special exception, the you may copy, distribute and modify the
-dnl configure scripts that are the output of Autoconf when processing
-dnl the Macro.  You need not follow the terms of the GNU General Public
-dnl License when using or distributing such scripts.
-dnl
+#
+# AX_CHECK_GLUT
+#
+# Check for GLUT.  If GLUT is found, the required compiler and linker flags
+# are included in the output variables "GLUT_CFLAGS" and "GLUT_LIBS",
+# respectively.  If GLUT is not found, "no_glut" is set to "yes".
+#
+# If the header "GL/glut.h" is found, "HAVE_GL_GLUT_H" is defined.  If the
+# header "GLUT/glut.h" is found, HAVE_GLUT_GLUT_H is defined.  These
+# preprocessor definitions may not be mutually exclusive.
+#
+# version: 2.0
+# author: Braden McDaniel <braden@endoframe.com>
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2, or (at your option)
+# any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+# 02110-1301, USA.
+#
+# As a special exception, the you may copy, distribute and modify the
+# configure scripts that are the output of Autoconf when processing
+# the Macro.  You need not follow the terms of the GNU General Public
+# License when using or distributing such scripts.
+#
 AC_DEFUN([AX_CHECK_GLUT],
 [AC_REQUIRE([AX_CHECK_GLU])dnl
 AC_REQUIRE([AC_PATH_XTRA])dnl
