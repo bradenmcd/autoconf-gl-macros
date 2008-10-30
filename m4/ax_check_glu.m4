@@ -81,20 +81,18 @@ LIBS="${GL_LIBS} ${ax_save_LIBS}"
 AC_LANG_PUSH([C++])
 AS_IF([test X$ax_compiler_ms = Xyes],
       [AC_LANG_PUSH([C])])
-AC_LINK_IFELSE(
-[AX_CHECK_GLU_PROGRAM],
-[ax_cv_check_glu_libglu=yes],
-[LIBS=""
-ax_check_libs="-lglu32 -lGLU"
-for ax_lib in ${ax_check_libs}; do
-  AS_IF([test X$ax_compiler_ms = Xyes],
-        [ax_try_lib=`echo $ax_lib | $SED -e 's/^-l//' -e 's/$/.lib/'`],
-        [ax_try_lib="${ax_lib}"])
-  LIBS="${ax_try_lib} ${GL_LIBS} ${ax_save_LIBS}"
-  AC_LINK_IFELSE([AX_CHECK_GLU_PROGRAM],
-                 [ax_cv_check_glu_libglu="${ax_try_lib}"; break])
-done
-])
+AC_LINK_IFELSE([AX_CHECK_GLU_PROGRAM],
+               [ax_cv_check_glu_libglu=yes],
+               [LIBS=""
+               ax_check_libs="-lglu32 -lGLU"
+               for ax_lib in ${ax_check_libs}; do
+                 AS_IF([test X$ax_compiler_ms = Xyes],
+                       [ax_try_lib=`echo $ax_lib | $SED -e 's/^-l//' -e 's/$/.lib/'`],
+                       [ax_try_lib="${ax_lib}"])
+                 LIBS="${ax_try_lib} ${GL_LIBS} ${ax_save_LIBS}"
+                 AC_LINK_IFELSE([AX_CHECK_GLU_PROGRAM],
+                                [ax_cv_check_glu_libglu="${ax_try_lib}"; break])
+               done])
 AS_IF([test X$ax_compiler_ms = Xyes],
       [AC_LANG_POP([C])])
 AC_LANG_POP([C++])
@@ -114,22 +112,21 @@ AC_SUBST([GLU_LIBS])
 # tesselation callback function signature.
 #
 AS_IF([test "X$ax_cv_check_glu_libglu" != Xno],
-[AC_CACHE_CHECK([for varargs GLU tesselator callback function type],
-                [ax_cv_varargs_glu_tesscb],
-[ax_cv_varargs_glu_tesscb=no
-ax_save_CFLAGS="$CFLAGS"
-CFLAGS="$GL_CFLAGS $CFLAGS"
-AC_COMPILE_IFELSE(
-[AC_LANG_PROGRAM([[
+      [AC_CACHE_CHECK([for varargs GLU tesselator callback function type],
+                      [ax_cv_varargs_glu_tesscb],
+                      [ax_cv_varargs_glu_tesscb=no
+                      ax_save_CFLAGS="$CFLAGS"
+                      CFLAGS="$GL_CFLAGS $CFLAGS"
+                      AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
 # ifdef HAVE_GL_GLU_H
 #   include <GL/glu.h>
 # else
 #   include <OpenGL/glu.h>
 # endif]],
-                 [[GLvoid (*func)(...); gluTessCallback(0, 0, func)]])],
-[ax_cv_varargs_glu_tesscb=yes])
-CFLAGS="$ax_save_CFLAGS"])
-AS_IF([test X$ax_cv_varargs_glu_tesscb = Xyes],
-      [AC_DEFINE([HAVE_VARARGS_GLU_TESSCB], [1],
-                 [Use nonstandard varargs form for the GLU tesselator callback])])])
+                                        [[GLvoid (*func)(...); gluTessCallback(0, 0, func)]])],
+                                        [ax_cv_varargs_glu_tesscb=yes])
+                      CFLAGS="$ax_save_CFLAGS"])
+      AS_IF([test X$ax_cv_varargs_glu_tesscb = Xyes],
+            [AC_DEFINE([HAVE_VARARGS_GLU_TESSCB], [1],
+                       [Use nonstandard varargs form for the GLU tesselator callback])])])
 ])

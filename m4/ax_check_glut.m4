@@ -82,9 +82,9 @@ for ax_lib in ${ax_check_libs}; do
 done
 
 AS_IF([test "X$ax_cv_check_glut_libglut" = Xno -a "X$no_x" = Xyes],
-[LIBS='-framework GLUT'
-AC_LINK_IFELSE([AX_CHECK_GLUT_PROGRAM],
-               [ax_cv_check_glut_libglut="$LIBS"])])
+      [LIBS='-framework GLUT'
+      AC_LINK_IFELSE([AX_CHECK_GLUT_PROGRAM],
+                     [ax_cv_check_glut_libglut="$LIBS"])])
 
 CPPFLAGS="${ax_save_CPPFLAGS}"
 LIBS="${ax_save_LIBS}"

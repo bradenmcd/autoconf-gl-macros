@@ -94,17 +94,17 @@ for ax_lib in ${ax_check_libs}; do
 AC_LINK_IFELSE([AX_CHECK_GL_PROGRAM],
                [ax_cv_check_gl_libgl="${ax_try_lib}"; break],
                [ax_check_gl_nvidia_flags="-L/usr/${ax_check_gl_libdir}/nvidia" LIBS="${ax_try_lib} ${ax_check_gl_nvidia_flags} ${GL_LIBS} ${ax_save_LIBS}"
-AC_LINK_IFELSE([AX_CHECK_GL_PROGRAM],
-               [ax_cv_check_gl_libgl="${ax_try_lib} ${ax_check_gl_nvidia_flags}"; break],
-               [ax_check_gl_dylib_flag='-dylib_file /System/Library/Frameworks/OpenGL.framework/Versions/A/Libraries/libGL.dylib:/System/Library/Frameworks/OpenGL.framework/Versions/A/Libraries/libGL.dylib' LIBS="${ax_try_lib} ${ax_check_gl_dylib_flag} ${GL_LIBS} ${ax_save_LIBS}"
-AC_LINK_IFELSE([AX_CHECK_GL_PROGRAM],
-               [ax_cv_check_gl_libgl="${ax_try_lib} ${ax_check_gl_dylib_flag}"; break])])])
+               AC_LINK_IFELSE([AX_CHECK_GL_PROGRAM],
+                              [ax_cv_check_gl_libgl="${ax_try_lib} ${ax_check_gl_nvidia_flags}"; break],
+                              [ax_check_gl_dylib_flag='-dylib_file /System/Library/Frameworks/OpenGL.framework/Versions/A/Libraries/libGL.dylib:/System/Library/Frameworks/OpenGL.framework/Versions/A/Libraries/libGL.dylib' LIBS="${ax_try_lib} ${ax_check_gl_dylib_flag} ${GL_LIBS} ${ax_save_LIBS}"
+                              AC_LINK_IFELSE([AX_CHECK_GL_PROGRAM],
+                                             [ax_cv_check_gl_libgl="${ax_try_lib} ${ax_check_gl_dylib_flag}"; break])])])
 done
 
 AS_IF([test "X$ax_cv_check_gl_libgl" = Xno -a "X$no_x" = Xyes],
-[LIBS='-framework OpenGL'
-AC_LINK_IFELSE([AX_CHECK_GL_PROGRAM],
-               [ax_cv_check_gl_libgl="$LIBS"])])
+      [LIBS='-framework OpenGL'
+      AC_LINK_IFELSE([AX_CHECK_GL_PROGRAM],
+                     [ax_cv_check_gl_libgl="$LIBS"])])
 
 LIBS=${ax_save_LIBS}
 CPPFLAGS=${ax_save_CPPFLAGS}])
