@@ -40,12 +40,12 @@
 AC_DEFUN([AX_CHECK_GLU],
 [AC_REQUIRE([AX_CHECK_GL])dnl
 AC_REQUIRE([AC_PROG_CXX])dnl
-GLU_CFLAGS="${GL_CFLAGS}"
+GLU_CFLAGS=$GL_CFLAGS
 
-ax_save_CPPFLAGS="${CPPFLAGS}"
-CPPFLAGS="${GL_CFLAGS} ${CPPFLAGS}"
+ax_save_CPPFLAGS=$CPPFLAGS
+CPPFLAGS="$GL_CFLAGS $CPPFLAGS"
 AC_CHECK_HEADERS([GL/glu.h OpenGL/glu.h])
-CPPFLAGS="${ax_save_CPPFLAGS}"
+CPPFLAGS=$ax_save_CPPFLAGS
 
 m4_define([AX_CHECK_GLU_PROGRAM],
           [AC_LANG_PROGRAM([[
@@ -62,16 +62,16 @@ m4_define([AX_CHECK_GLU_PROGRAM],
                            [[gluBeginCurve(0)]])])
 
 AC_CACHE_CHECK([for OpenGL Utility library], [ax_cv_check_glu_libglu],
-[ax_cv_check_glu_libglu="no"
-ax_save_CPPFLAGS="${CPPFLAGS}"
-CPPFLAGS="${GL_CFLAGS} ${CPPFLAGS}"
-ax_save_LIBS="${LIBS}"
+[ax_cv_check_glu_libglu=no
+ax_save_CPPFLAGS=$CPPFLAGS
+CPPFLAGS="$GL_CFLAGS $CPPFLAGS"
+ax_save_LIBS=$LIBS
 
 #
 # First, check for the possibility that everything we need is already in
 # GL_LIBS.
 #
-LIBS="${GL_LIBS} ${ax_save_LIBS}"
+LIBS="$GL_LIBS $ax_save_LIBS"
 #
 # libGLU typically links with libstdc++ on POSIX platforms.
 # However, setting the language to C++ means that test program
@@ -88,22 +88,22 @@ AC_LINK_IFELSE([AX_CHECK_GLU_PROGRAM],
                for ax_lib in ${ax_check_libs}; do
                  AS_IF([test X$ax_compiler_ms = Xyes],
                        [ax_try_lib=`echo $ax_lib | $SED -e 's/^-l//' -e 's/$/.lib/'`],
-                       [ax_try_lib="${ax_lib}"])
-                 LIBS="${ax_try_lib} ${GL_LIBS} ${ax_save_LIBS}"
+                       [ax_try_lib=$ax_lib])
+                 LIBS="$ax_try_lib $GL_LIBS $ax_save_LIBS"
                  AC_LINK_IFELSE([AX_CHECK_GLU_PROGRAM],
-                                [ax_cv_check_glu_libglu="${ax_try_lib}"; break])
+                                [ax_cv_check_glu_libglu=$ax_try_lib; break])
                done])
 AS_IF([test X$ax_compiler_ms = Xyes],
       [AC_LANG_POP([C])])
 AC_LANG_POP([C++])
 
-LIBS=${ax_save_LIBS}
-CPPFLAGS=${ax_save_CPPFLAGS}])
+LIBS=$ax_save_LIBS
+CPPFLAGS=$ax_save_CPPFLAGS])
 AS_IF([test "X$ax_cv_check_glu_libglu" = Xno],
       [no_glu=yes; GLU_CFLAGS=""; GLU_LIBS=""],
       [AS_IF([test "X$ax_cv_check_glu_libglu" = Xyes],
-             [GLU_LIBS="$GL_LIBS"],
-             [GLU_LIBS="${ax_cv_check_glu_libglu} ${GL_LIBS}"])])
+             [GLU_LIBS=$GL_LIBS],
+             [GLU_LIBS="$ax_cv_check_glu_libglu $GL_LIBS"])])
 AC_SUBST([GLU_CFLAGS])
 AC_SUBST([GLU_LIBS])
 
@@ -111,12 +111,12 @@ AC_SUBST([GLU_LIBS])
 # Some versions of Mac OS X include a broken interpretation of the GLU
 # tesselation callback function signature when using the C++ compiler.
 #
-AS_IF([test "X$ax_cv_check_glu_libglu" != Xno],
+AS_IF([test X$ax_cv_check_glu_libglu != Xno],
       [AC_CACHE_CHECK([for varargs GLU tesselator callback function type],
                       [ax_cv_varargs_glu_tesscb],
                       [AC_LANG_PUSH([C++])
                       ax_cv_varargs_glu_tesscb=no
-                      ax_save_CXXFLAGS="$CXXFLAGS"
+                      ax_save_CXXFLAGS=$CXXFLAGS
                       CXXFLAGS="$GL_CFLAGS $CXXFLAGS"
                       AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
 # ifdef HAVE_GL_GLU_H
@@ -126,7 +126,7 @@ AS_IF([test "X$ax_cv_check_glu_libglu" != Xno],
 # endif]],
                                         [[GLvoid (*func)(...); gluTessCallback(0, 0, func)]])],
                                         [ax_cv_varargs_glu_tesscb=yes])
-                      CXXFLAGS="$ax_save_CXXFLAGS"
+                      CXXFLAGS=$ax_save_CXXFLAGS
                       AC_LANG_POP([C++])])
       AS_IF([test X$ax_cv_varargs_glu_tesscb = Xyes],
             [AC_DEFINE([HAVE_VARARGS_GLU_TESSCB], [1],

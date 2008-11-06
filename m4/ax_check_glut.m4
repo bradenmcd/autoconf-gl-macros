@@ -36,13 +36,13 @@ AC_DEFUN([AX_CHECK_GLUT],
 [AC_REQUIRE([AX_CHECK_GLU])dnl
 AC_REQUIRE([AC_PATH_XTRA])dnl
 
-ax_save_CPPFLAGS="${CPPFLAGS}"
-CPPFLAGS="${GLU_CFLAGS} ${CPPFLAGS}"
+ax_save_CPPFLAGS=$CPPFLAGS
+CPPFLAGS="$GLU_CFLAGS $CPPFLAGS"
 AC_CHECK_HEADERS([GL/glut.h GLUT/glut.h])
-CPPFLAGS="${ax_save_CPPFLAGS}"
+CPPFLAGS=$ax_save_CPPFLAGS
 
-GLUT_CFLAGS=${GLU_CFLAGS}
-GLUT_LIBS=${GLU_LIBS}
+GLUT_CFLAGS=$GLU_CFLAGS
+GLUT_LIBS=$GLU_LIBS
 
 m4_define([AX_CHECK_GLUT_PROGRAM],
           [AC_LANG_PROGRAM([[
@@ -62,37 +62,37 @@ m4_define([AX_CHECK_GLUT_PROGRAM],
 # If X is present, assume GLUT depends on it.
 #
 AS_IF([test X$no_x != Xyes],
-      [GLUT_LIBS="${X_PRE_LIBS} -lXmu -lXi ${X_EXTRA_LIBS} ${GLUT_LIBS}"])
+      [GLUT_LIBS="$X_PRE_LIBS -lXmu -lXi $X_EXTRA_LIBS $GLUT_LIBS"])
 
 AC_CACHE_CHECK([for GLUT library], [ax_cv_check_glut_libglut],
-[ax_cv_check_glut_libglut="no"
+[ax_cv_check_glut_libglut=no
 AC_LANG_PUSH(C)
-ax_save_CPPFLAGS="${CPPFLAGS}"
-CPPFLAGS="${GLUT_CFLAGS} ${CPPFLAGS}"
-ax_save_LIBS="${LIBS}"
+ax_save_CPPFLAGS=$CPPFLAGS
+CPPFLAGS="$GLUT_CFLAGS $CPPFLAGS"
+ax_save_LIBS=$LIBS
 LIBS=""
 ax_check_libs="-lglut32 -lglut"
-for ax_lib in ${ax_check_libs}; do
+for ax_lib in $ax_check_libs; do
   AS_IF([test X$ax_compiler_ms = Xyes],
         [ax_try_lib=`echo $ax_lib | $SED -e 's/^-l//' -e 's/$/.lib/'`],
-        [ax_try_lib="${ax_lib}"])
-  LIBS="${ax_try_lib} ${GLUT_LIBS} ${ax_save_LIBS}"
+        [ax_try_lib=$ax_lib])
+  LIBS="$ax_try_lib $GLUT_LIBS $ax_save_LIBS"
   AC_LINK_IFELSE([AX_CHECK_GLUT_PROGRAM],
-                 [ax_cv_check_glut_libglut="${ax_try_lib}"; break])
+                 [ax_cv_check_glut_libglut=$ax_try_lib; break])
 done
 
-AS_IF([test "X$ax_cv_check_glut_libglut" = Xno -a "X$no_x" = Xyes],
+AS_IF([test "X$ax_cv_check_glut_libglut" = Xno -a X$no_x = Xyes],
       [LIBS='-framework GLUT'
       AC_LINK_IFELSE([AX_CHECK_GLUT_PROGRAM],
-                     [ax_cv_check_glut_libglut="$LIBS"])])
+                     [ax_cv_check_glut_libglut=$LIBS])])
 
-CPPFLAGS="${ax_save_CPPFLAGS}"
-LIBS="${ax_save_LIBS}"
+CPPFLAGS=$ax_save_CPPFLAGS
+LIBS=$ax_save_LIBS
 AC_LANG_POP(C)])
 
 AS_IF([test "X$ax_cv_check_glut_libglut" = Xno],
-      [no_glut="yes"; GLUT_CFLAGS=""; GLUT_LIBS=""],
-      [GLUT_LIBS="${ax_cv_check_glut_libglut} ${GLUT_LIBS}"])
+      [no_glut=yes; GLUT_CFLAGS=""; GLUT_LIBS=""],
+      [GLUT_LIBS="$ax_cv_check_glut_libglut $GLUT_LIBS"])
 
 AC_SUBST([GLUT_CFLAGS])
 AC_SUBST([GLUT_LIBS])
