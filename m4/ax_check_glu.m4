@@ -111,7 +111,7 @@ AC_SUBST([GLU_LIBS])
 # Some versions of Mac OS X include a broken interpretation of the GLU
 # tesselation callback function signature when using the C++ compiler.
 #
-AS_IF([test X$ax_cv_check_glu_libglu != Xno],
+AS_IF([test "X$ax_cv_check_glu_libglu" != Xno],
       [AC_CACHE_CHECK([for varargs GLU tesselator callback function type],
                       [ax_cv_varargs_glu_tesscb],
                       [AC_LANG_PUSH([C++])
