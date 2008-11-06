@@ -1,3 +1,4 @@
+# -*- mode: autoconf -*-
 #
 # AX_CHECK_GL
 #
