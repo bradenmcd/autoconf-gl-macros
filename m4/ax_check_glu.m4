@@ -15,7 +15,7 @@
 # rather than the standard "GLvoid (*)()".  If the former condition is
 # detected, this macro defines "HAVE_VARARGS_GLU_TESSCB".
 #
-# version: 2.1
+# version: 2.2
 # author: Braden McDaniel <braden@endoframe.com>
 #
 # This program is free software; you can redistribute it and/or modify

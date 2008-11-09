@@ -11,7 +11,7 @@
 # "OpenGL/gl.h" is found, HAVE_OPENGL_GL_H is defined.  These preprocessor
 # definitions may not be mutually exclusive.
 #
-# version: 2.2
+# version: 2.3
 # author: Braden McDaniel <braden@endoframe.com>
 #
 # This program is free software; you can redistribute it and/or modify
