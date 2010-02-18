@@ -81,13 +81,14 @@ for ax_lib in $ax_check_libs; do
                  [ax_cv_check_glut_libglut=$ax_try_lib; break])
 done
 
+LIBS=$ax_save_LIBS
 AS_IF([test "X$ax_cv_check_glut_libglut" = Xno -a X$no_x = Xyes],
       [LDFLAGS="$ax_save_LDFLAGS -framework GLUT"
       AC_LINK_IFELSE([AX_CHECK_GLUT_PROGRAM],
                      [ax_cv_check_glut_libglut='-framework GLUT'])])
 
+LDFLAGS=$ax_save_LDFLAGS
 CPPFLAGS=$ax_save_CPPFLAGS
-LIBS=$ax_save_LIBS
 AC_LANG_POP(C)])
 
 AS_IF([test "X$ax_cv_check_glut_libglut" = Xno],

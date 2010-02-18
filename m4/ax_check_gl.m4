@@ -137,12 +137,12 @@ AS_IF([test "X$ax_cv_check_gl_libgl" != Xno],
                       [AS_IF([test X$no_x = Xyes],
                              [ax_cv_check_gl_libgl=no])])])
 
+LIBS=$ax_save_LIBS
 AS_IF([test "X$ax_cv_check_gl_libgl" = Xno -a X$no_x = Xyes],
       [LDFLAGS="$ax_save_LDFLAGS -framework OpenGL"
       AC_LINK_IFELSE([AX_CHECK_GL_PROGRAM],
                      [ax_cv_check_gl_libgl='-framework OpenGL'])])
 
-LIBS=$ax_save_LIBS
 LDFLAGS=$ax_save_LDFLAGS
 CPPFLAGS=$ax_save_CPPFLAGS])
 
