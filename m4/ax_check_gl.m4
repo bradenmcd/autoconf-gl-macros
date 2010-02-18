@@ -43,7 +43,7 @@ AC_REQUIRE([AX_PTHREAD])dnl
 AC_LANG_PUSH([C])
 AX_LANG_COMPILER_MS
 AS_IF([test X$ax_compiler_ms = Xno],
-      [GL_CFLAGS="${PTHREAD_CFLAGS}"; GL_LIBS="${PTHREAD_LIBS} -lm"])
+      [GL_CFLAGS="${PTHREAD_CFLAGS}"; GL_LIBS="${PTHREAD_LIBS}"])
 
 #
 # Use x_includes and x_libraries if they have been set (presumably by
@@ -53,7 +53,7 @@ AS_IF([test X$no_x != Xyes],
       [AS_IF([test -n "$x_includes"],
              [GL_CFLAGS="-I$x_includes $GL_CFLAGS"])]
        AS_IF([test -n "$x_libraries"],
-             [GL_LIBS="-L$x_libraries -lX11 $GL_LIBS"]))
+             [GL_LIBS="-L$x_libraries $GL_LIBS"]))
 
 AC_CHECK_HEADERS([windows.h])
 
