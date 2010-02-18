@@ -80,6 +80,20 @@ m4_define([AX_CHECK_GL_PROGRAM],
 # endif]],
                            [[glBegin(0)]])])
 
+m4_define([AX_CHECK_GL_GLX_PROGRAM],
+          [AC_LANG_PROGRAM([[
+# if defined(HAVE_WINDOWS_H) && defined(_WIN32)
+#   include <windows.h>
+# endif
+# ifdef HAVE_GL_GL_H
+#   include <GL/gl.h>
+# elif defined(HAVE_OPENGL_GL_H)
+#   include <OpenGL/gl.h>
+# else
+#   error no gl.h
+# endif]],
+                           [[glXQueryVersion(0, 0, 0)]])])
+
 AC_CACHE_CHECK([for OpenGL library], [ax_cv_check_gl_libgl],
 [ax_cv_check_gl_libgl=no
 case $host_cpu in
@@ -105,6 +119,20 @@ AC_LINK_IFELSE([AX_CHECK_GL_PROGRAM],
                               AC_LINK_IFELSE([AX_CHECK_GL_PROGRAM],
                                              [ax_cv_check_gl_libgl="$ax_try_lib $ax_check_gl_dylib_flag"; break])])])
 done
+
+#
+# If no_x is "yes", we don't want to wind up using a libGL that is
+# linked with X11.  Test to see if the found libGL includes GLX
+# functions.  If it does and no_x is "yes", we want to reset
+# ax_cv_check_gl_libgl back to "no".
+#
+# Note that LIBS should still have whatever value it had when we broke
+# out of the test loop above; use that.
+#
+AS_IF([test "X$ax_cv_check_gl_libgl" != Xno],
+      [AC_LINK_IFELSE([AX_CHECK_GL_GLX_PROGRAM],
+                      [AS_IF([test X$no_x = Xyes],
+                             [ax_cv_check_gl_libgl=no])])])
 
 AS_IF([test "X$ax_cv_check_gl_libgl" = Xno -a X$no_x = Xyes],
       [LIBS='-framework OpenGL'
