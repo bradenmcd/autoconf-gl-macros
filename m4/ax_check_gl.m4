@@ -101,23 +101,26 @@ case $host_cpu in
   *)      ax_check_gl_libdir=lib ;;
 esac
 ax_save_CPPFLAGS=$CPPFLAGS
-CPPFLAGS="$GL_CFLAGS $CPPFLAGS"
+CPPFLAGS="$CPPFLAGS $GL_CFLAGS"
+ax_save_LDFLAGS=$LDFLAGS
 ax_save_LIBS=$LIBS
-LIBS=""
 ax_check_libs="-lopengl32 -lGL"
 for ax_lib in $ax_check_libs; do
   AS_IF([test X$ax_compiler_ms = Xyes],
         [ax_try_lib=`echo $ax_lib | $SED -e 's/^-l//' -e 's/$/.lib/'`],
         [ax_try_lib=$ax_lib])
-  LIBS="$ax_try_lib $GL_LIBS $ax_save_LIBS"
+  LDFLAGS="$ax_save_LDFLAGS $GL_LIBS"
+  LIBS="$ax_try_lib $ax_save_LIBS"
 AC_LINK_IFELSE([AX_CHECK_GL_PROGRAM],
                [ax_cv_check_gl_libgl=$ax_try_lib; break],
-               [ax_check_gl_nvidia_flags="-L/usr/$ax_check_gl_libdir/nvidia" LIBS="$ax_try_lib $ax_check_gl_nvidia_flags $GL_LIBS $ax_save_LIBS"
-               AC_LINK_IFELSE([AX_CHECK_GL_PROGRAM],
-                              [ax_cv_check_gl_libgl="$ax_try_lib $ax_check_gl_nvidia_flags"; break],
-                              [ax_check_gl_dylib_flag='-dylib_file /System/Library/Frameworks/OpenGL.framework/Versions/A/Libraries/libGL.dylib:/System/Library/Frameworks/OpenGL.framework/Versions/A/Libraries/libGL.dylib' LIBS="$ax_try_lib $ax_check_gl_dylib_flag $GL_LIBS $ax_save_LIBS"
-                              AC_LINK_IFELSE([AX_CHECK_GL_PROGRAM],
-                                             [ax_cv_check_gl_libgl="$ax_try_lib $ax_check_gl_dylib_flag"; break])])])
+               [ax_check_gl_nvidia_flags="-L/usr/$ax_check_gl_libdir/nvidia"
+                LDFLAGS="$ax_save_LDFLAGS $GL_LIBS $ax_check_gl_nvidia_flags"
+                AC_LINK_IFELSE([AX_CHECK_GL_PROGRAM],
+                               [ax_cv_check_gl_libgl="$ax_check_gl_nvidia_flags $ax_try_lib"; break],
+                               [ax_check_gl_dylib_flag='-dylib_file /System/Library/Frameworks/OpenGL.framework/Versions/A/Libraries/libGL.dylib:/System/Library/Frameworks/OpenGL.framework/Versions/A/Libraries/libGL.dylib'
+                                LDFLAGS="$ax_save_LDFLAGS $GL_LIBS $ax_check_gl_dylib_flag"
+                                AC_LINK_IFELSE([AX_CHECK_GL_PROGRAM],
+                                               [ax_cv_check_gl_libgl="$ax_check_gl_dylib_flag $ax_try_lib"; break])])])
 done
 
 #
@@ -126,8 +129,8 @@ done
 # functions.  If it does and no_x is "yes", we want to reset
 # ax_cv_check_gl_libgl back to "no".
 #
-# Note that LIBS should still have whatever value it had when we broke
-# out of the test loop above; use that.
+# Note that LDFLAGS and LIBS should still have whatever values they
+# had when we broke out of the test loop above; use that.
 #
 AS_IF([test "X$ax_cv_check_gl_libgl" != Xno],
       [AC_LINK_IFELSE([AX_CHECK_GL_GLX_PROGRAM],
@@ -135,11 +138,12 @@ AS_IF([test "X$ax_cv_check_gl_libgl" != Xno],
                              [ax_cv_check_gl_libgl=no])])])
 
 AS_IF([test "X$ax_cv_check_gl_libgl" = Xno -a X$no_x = Xyes],
-      [LIBS='-framework OpenGL'
+      [LDFLAGS="$ax_save_LDFLAGS -framework OpenGL"
       AC_LINK_IFELSE([AX_CHECK_GL_PROGRAM],
-                     [ax_cv_check_gl_libgl=$LIBS])])
+                     [ax_cv_check_gl_libgl='-framework OpenGL'])])
 
 LIBS=$ax_save_LIBS
+LDFLAGS=$ax_save_LDFLAGS
 CPPFLAGS=$ax_save_CPPFLAGS])
 
 AS_IF([test "X$ax_cv_check_gl_libgl" = Xno],
