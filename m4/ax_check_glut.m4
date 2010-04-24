@@ -70,15 +70,20 @@ ax_save_LDFLAGS=$LDFLAGS
 ax_save_LIBS=$LIBS
 LIBS=""
 AS_IF([test X$no_x != Xyes],
-      [ax_check_glut_x_libs="$X_PRE_LIBS -lXmu -lXi $X_EXTRA_LIBS"])
+      [ax_check_glut_x_libs="$X_PRE_LIBS -lXi $X_EXTRA_LIBS"
+       ax_check_glut_x_libs_with_xmu="$X_PRE_LIBS -lXmu -lXi $X_EXTRA_LIBS"])
 ax_check_libs="-lglut32 -lglut"
 for ax_lib in $ax_check_libs; do
   AS_IF([test X$ax_compiler_ms = Xyes],
         [ax_try_lib=`echo $ax_lib | $SED -e 's/^-l//' -e 's/$/.lib/'`],
         [ax_try_lib=$ax_lib])
-  LIBS="$ax_try_lib $GLUT_LIBS $ax_check_glut_x_libs $ax_save_LIBS"
-  AC_LINK_IFELSE([AX_CHECK_GLUT_PROGRAM],
-                 [ax_cv_check_glut_libglut=$ax_try_lib; break])
+  LIBS="$ax_try_lib $ax_check_glut_x_libs $ax_save_LIBS"
+  AC_LINK_IFELSE(
+    [AX_CHECK_GLUT_PROGRAM],
+    [ax_cv_check_glut_libglut=$ax_try_lib; break]
+    [LIBS="$ax_try_lib $ax_check_glut_x_libs_with_xmu $ax_save_LIBS"
+     AC_LINK_IFELSE([AX_CHECK_GLUT_PROGRAM],
+                    [ax_cv_check_glut_libglut=$ax_try_lib; break])])
 done
 
 LIBS=$ax_save_LIBS
