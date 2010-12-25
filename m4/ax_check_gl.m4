@@ -11,7 +11,7 @@
 # "OpenGL/gl.h" is found, HAVE_OPENGL_GL_H is defined.  These preprocessor
 # definitions may not be mutually exclusive.
 #
-# version: 2.6
+# version: 2.7
 # author: Braden McDaniel <braden@endoframe.com>
 #
 # This program is free software; you can redistribute it and/or modify
@@ -38,12 +38,9 @@ AC_DEFUN([AX_CHECK_GL],
 [AC_REQUIRE([AC_CANONICAL_HOST])dnl
 AC_REQUIRE([AC_PATH_X])dnl
 AC_REQUIRE([AC_PROG_SED])dnl
-AC_REQUIRE([AX_PTHREAD])dnl
 
 AC_LANG_PUSH([C])
 AX_LANG_COMPILER_MS
-AS_IF([test X$ax_compiler_ms = Xno],
-      [GL_CFLAGS="${PTHREAD_CFLAGS}"; GL_LIBS="${PTHREAD_LIBS}"])
 
 #
 # Use x_includes and x_libraries if they have been set (presumably by
@@ -112,14 +109,10 @@ for ax_lib in $ax_check_libs; do
   LIBS="$ax_try_lib $ax_save_LIBS"
 AC_LINK_IFELSE([AX_CHECK_GL_PROGRAM],
                [ax_cv_check_gl_libgl=$ax_try_lib; break],
-               [ax_check_gl_nvidia_flags="-L/usr/$ax_check_gl_libdir/nvidia"
-                LDFLAGS="$ax_save_LDFLAGS $GL_LIBS $ax_check_gl_nvidia_flags"
+               [ax_check_gl_dylib_flag='-dylib_file /System/Library/Frameworks/OpenGL.framework/Versions/A/Libraries/libGL.dylib:/System/Library/Frameworks/OpenGL.framework/Versions/A/Libraries/libGL.dylib'
+                LDFLAGS="$ax_save_LDFLAGS $GL_LIBS $ax_check_gl_dylib_flag"
                 AC_LINK_IFELSE([AX_CHECK_GL_PROGRAM],
-                               [ax_cv_check_gl_libgl="$ax_check_gl_nvidia_flags $ax_try_lib"; break],
-                               [ax_check_gl_dylib_flag='-dylib_file /System/Library/Frameworks/OpenGL.framework/Versions/A/Libraries/libGL.dylib:/System/Library/Frameworks/OpenGL.framework/Versions/A/Libraries/libGL.dylib'
-                                LDFLAGS="$ax_save_LDFLAGS $GL_LIBS $ax_check_gl_dylib_flag"
-                                AC_LINK_IFELSE([AX_CHECK_GL_PROGRAM],
-                                               [ax_cv_check_gl_libgl="$ax_check_gl_dylib_flag $ax_try_lib"; break])])])
+                               [ax_cv_check_gl_libgl="$ax_check_gl_dylib_flag $ax_try_lib"; break])])
 done
 
 #
