@@ -10,7 +10,7 @@
 # header "GLUT/glut.h" is found, HAVE_GLUT_GLUT_H is defined.  These
 # preprocessor definitions may not be mutually exclusive.
 #
-# version: 2.2
+# version: 2.3
 # author: Braden McDaniel <braden@endoframe.com>
 #
 # This program is free software; you can redistribute it and/or modify
