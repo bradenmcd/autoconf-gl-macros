@@ -1,5 +1,5 @@
 AC_INIT([Autoconf GL Macros],
-        [20100321],
+        [20101226],
         [http://code.google.com/p/autoconf-gl-macros/issues/entry],
         [autoconf-gl-macros],
         [http://code.google.com/p/autoconf-gl-macros/])
